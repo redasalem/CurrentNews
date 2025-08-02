@@ -6,8 +6,8 @@ function App() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("business");
-  const [country, setCountry] = useState("us");
+  const [selectedCategory, setSelectedCategory] = useState("general");
+  const [country, setCountry] = useState();
 
   useEffect(() => {
     async function fetchNews() {
@@ -15,22 +15,16 @@ function App() {
         setLoading(true);
         setError(null);
 
-        // تكوين headers للطلب
-        const headers = {
-          'Authorization': `Bearer 645f1564846141e79bf2f08d27315b13`
-        };
-
-        const res = await axios.get(
-          `https://newsapi.org/v2/top-headlines`,
-          {
-            params: {
-              country: country,
-              category: selectedCategory,
-              apiKey: '645f1564846141e79bf2f08d27315b13'
-            },
-            headers: headers
-          }
-        );
+       const res = await axios.get(
+  `https://newsapi.org/v2/top-headlines`,
+  {
+    params: {
+      country: country,
+      category: selectedCategory,
+      apiKey: import.meta.env.VITE_SECRET_KEY
+    }
+  }
+);
 
         if (res.data.articles && res.data.articles.length > 0) {
           setNews(res.data.articles);
